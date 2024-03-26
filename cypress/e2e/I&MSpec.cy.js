@@ -54,7 +54,42 @@ describe('I&MAutomationTest', () => {
     
     cy.get('i.dropdown-select-prefix-icon.bi.bi-filter.mr-2').click()
     cy.get('div.dropdown > ul.dropdown-menu').should('be.visible')
+  });
 
+  it("Form Automation", () => {
+    cy.fixture("formData.json").then((formData) => {
+      const { fullName, email, phoneNumber, nearestBranch } = formData;
+
+      cy.visit("/accounts/paygo-account/");
+
+      const formFields = [
+        { label: "Full Name", attr: "input_17_2", value: fullName },
+        { label: "Email", attr: "input_17_3", value: email },
+        { label: "Phone Number", attr: "input_17_4", value: phoneNumber },
+      ];
+  
+      formFields.forEach(({ label, attr, value }) => {
+        cy.contains("label", label)
+          .should("have.attr", "for", attr)
+          .next()
+          .type(value);
+  
+        // Assert
+        cy.get(`input#${attr}`).should("have.value", value);
+      });
+  
+      // Nearest branch selection
+      cy.get("select#input_17_5")
+        .select(nearestBranch)
+        .should("have.value", nearestBranch);
+  
+      cy.get(
+        'input[type="radio"][value="I am interested, please contact me"]'
+      ).check();
+      cy.get('input[type="checkbox"][value="1"]').check();
+  
+      cy.get('input[type="submit"]');
+    });
   });
 
 })
