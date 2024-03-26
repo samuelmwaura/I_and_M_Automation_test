@@ -1,13 +1,13 @@
-const {baseUrl,homePage} = require('../support/testUtils/testAutomationUtils')
+const { verifyNavigation,baseUrl, homePage } = require('../support/testUtils/testAutomationUtils')
 
-describe('I&MAutomationTest', () => { 
+describe('I&MAutomationTest', () => {
   beforeEach(() => {
     cy.visit("/");
   });
 
   it("Automating Navigation", () => {
     const linksText = [];
-  
+
     cy.get("ul#menu-header-menu > li")
       .each(($li) => {
         cy.wrap($li)
@@ -42,6 +42,19 @@ describe('I&MAutomationTest', () => {
       `${baseUrl}/cards/im-visa-international-gold-card/`,
       "Visa International Gold Credit Card"
     );
+  });
+
+
+  it('Terms and Conditions Expansion', () => {
+    verifyNavigation(
+      'ul#menu-footer-menu > li > a:contains("Terms and Conditions")',
+      `${baseUrl}/terms-and-conditions/`, 
+      'Terms and Conditions'
+    )
+    
+    cy.get('i.dropdown-select-prefix-icon.bi.bi-filter.mr-2').click()
+    cy.get('div.dropdown > ul.dropdown-menu').should('be.visible')
+
   });
 
 })
