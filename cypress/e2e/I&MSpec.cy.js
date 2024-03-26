@@ -26,4 +26,8 @@ describe('I&MAutomationTest', () => {
       });
   });
 
+  it("Interacting with Credit Card Menu", () => {
+    
+  });
+
 })
